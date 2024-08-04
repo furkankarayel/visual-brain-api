@@ -8,17 +8,12 @@ const knex = require('knex')
 require('dotenv').config();
 const saltRounds = 10;
 
-
-
-
 const limiter = rateLimit({
 	windowMs: 24 * 60 * 60 * 1000, // 24h limit
-	limit: 10, 
+	limit: 50, 
 	standardHeaders: 'draft-7', 
 	legacyHeaders: false, 
 })
-
-// Apply the rate limiting middleware to all requests.
 
 const login = require('./controllers/login')
 const register = require('./controllers/register')
