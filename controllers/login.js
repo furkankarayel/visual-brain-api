@@ -2,8 +2,8 @@ const checkUserPassword = (enteredPassword, storedPasswordHash, bcrypt) =>
     bcrypt.compare(enteredPassword, storedPasswordHash)
 
 const handleLogin = (db, bcrypt) => (req,res) => {
-    const {email, name, password} = req.body;
-    if (!email || !name || !password){
+    const {email, password} = req.body;
+    if (!email || !password){
         return res.status(400).json('incorrect form submission')
     }
     if(email && password != null) {
