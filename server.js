@@ -8,13 +8,6 @@ const knex = require('knex')
 require('dotenv').config();
 const saltRounds = 10;
 
-const limiter = rateLimit({
-	windowMs: 24 * 60 * 60 * 1000, // 24h limit
-	limit: 50, 
-	standardHeaders: 'draft-7', 
-	legacyHeaders: false, 
-})
-
 const login = require('./controllers/login')
 const register = require('./controllers/register')
 const profile = require('./controllers/profile')
@@ -35,7 +28,6 @@ const app = express();
 
 app.use(bodyParser.json())
 app.use(cors())
-app.use(limiter)
 
 app.post('/login', login.handleLogin(db,bcrypt))
 app.post('/register', register.handleRegister(db,bcrypt,saltRounds))
