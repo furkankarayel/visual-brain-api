@@ -1,9 +1,9 @@
-const handleRegister = (db, bcrypt, saltRounds) => (req,res) => {
+const handleRegister = (db, bcrypt) => (req,res) => {
     const {email, name, password} = req.body;
     if (!email || !name || !password){
         return res.status(400).json('incorrect form submission')
     }
-    const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    const hashedPassword = bcrypt.hashSync(password);
     db.transaction(tx => {
         tx.insert({
             hash: hashedPassword,
@@ -15,7 +15,7 @@ const handleRegister = (db, bcrypt, saltRounds) => (req,res) => {
             tx('users')
                 .returning('*')
                 .insert({
-                    email: loginEmail[0].email,
+                    email: loginEmail[0],
                     name: name,
                     join_date: new Date()
                 })
@@ -26,7 +26,7 @@ const handleRegister = (db, bcrypt, saltRounds) => (req,res) => {
         .then(tx.commit)
         .catch(tx.rollback)
     })
-    .catch(err => res.status(400).json(err))
+    .catch(err => res.status(400).json('not able to register'))
 }
 
 module.exports = {
