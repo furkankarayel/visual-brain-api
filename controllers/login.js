@@ -7,26 +7,26 @@ const handleLogin = (db, bcrypt) => (req,res) => {
         return res.status(400).json('incorrect form submission')
     }
 
-        db('login')
-        .where('email', email)
-        .then(response => {
-            var data = response[0]
+    db('login')
+    .where('email', email)
+    .then(response => {
+        var data = response[0]
 
-            if(checkUserPassword(password, data.hash, bcrypt))
-                {
-                    console.log('yea')
-                    db('users')
-                        .select('*')
-                        .where('email', email)
-                        .then(user => {
-             
-                            res.json(user[0])
-                        })
-                        .catch(err => res.status(400).json('not able to get user'))
-                    
-                } 
-        })
-        .catch(err => res.status(400).json('wrong credentials'))
+        if(checkUserPassword(password, data.hash, bcrypt))
+            {
+                console.log('yea')
+                db('users')
+                    .select('*')
+                    .where('email', email)
+                    .then(user => {
+            
+                        res.json(user[0])
+                    })
+                    .catch(err => res.status(400).json('not able to get user'))
+                
+            } 
+    })
+    .catch(err => res.status(400).json('wrong credentials'))
 }
 
 module.exports = {
